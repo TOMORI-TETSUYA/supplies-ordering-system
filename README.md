@@ -1,1 +1,1 @@
-# supplies-ordering-system
+# 備品注文システム
