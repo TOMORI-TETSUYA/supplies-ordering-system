@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シャッフル掃除当番決定表</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        
+        <h1>掃除当番決定表</h1>
+
+        <div class="tab-menu">
+            <button id="tabMain" class="tab-btn active">🏠 シャッフル画面</button>
+            <button id="tabAdmin" class="tab-btn">⚙️ 管理・設定画面</button>
+        </div>
+
+        <div id="mainView">
+            
+            <div class="member-area">
+                <h3 id="memberCountTitle">対象メンバー</h3>
+                
+                <ul id="displayMemberList"></ul>
+                
+                <div id="actionArea">
+                    <button id="shuffleBtn">シャッフルして決定</button>
+
+                    <div id="shareArea" class="hidden">
+                        <p class="lock-msg">✅ 結果は固定されました</p>
+                        <button id="copyUrlBtn" class="btn-share">🔗 共有用URLをコピー</button>
+                        <button id="resetBtn" class="btn-reset">↺ 固定を解除してリセット</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-area">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>掃除箇所</th>
+                            <th>担当者</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="text-align:center; color:#999;">
+                                ボタンを押すと結果が表示されます
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="adminView" class="hidden">
+            
+            <div id="adminLoginPanel">
+                <div class="login-box">
+                    <h3>🔐 管理者ログイン</h3>
+                    <p class="login-note">設定を変更するにはログインしてください</p>
+                    
+                    <div class="input-group-column">
+                        <label for="loginUser">ユーザー名 (ローマ字)</label>
+                        <input type="text" id="loginUser" placeholder="例: admin" pattern="[a-zA-Z0-9]+" required>
+                    </div>
+
+                    <div class="input-group-column">
+                        <label for="loginPass">パスワード (最大8文字)</label>
+                        <input type="password" id="loginPass" placeholder="英数字8文字以内" maxlength="8">
+                        
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="showPassCheck">
+                            <label for="showPassCheck" style="font-size:14px; font-weight:normal;">パスワードを表示する</label>
+                        </div>
+                    </div>
+
+                    <p id="loginErrorMsg" class="error-msg"></p>
+
+                    <button id="loginBtn" class="btn-login">ログインして設定へ</button>
+                </div>
+            </div>
+
+            <div id="adminConfigPanel" class="hidden">
+                
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <p class="admin-note" style="margin:0;">※設定はブラウザに自動保存されます。</p>
+                    <button id="logoutBtn" style="font-size:12px; padding:5px 10px;">ログアウト</button>
+                </div>
+                <hr style="margin: 15px 0; border:0; border-top:1px solid #eee;">
+
+                <div class="admin-section">
+                    <h3>👤 担当者の追加・削除</h3>
+                    <div class="input-group">
+                        <input type="text" id="newStaffName" placeholder="名前を入力 (例: 佐藤)">
+                        <button id="addStaffBtn" class="btn-add">追加</button>
+                    </div>
+                    <ul id="adminStaffList" class="admin-list"></ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3>🧹 掃除箇所の追加・削除</h3>
+                    <div class="input-group-column">
+                        <input type="text" id="newLocName" placeholder="場所名 (例: トイレ)">
+                        
+                        <div class="row">
+                            <span style="font-size:14px; align-self:center;">必要人数:</span>
+                            <input type="number" id="newLocCap" placeholder="人数" value="1" min="1" style="width:60px;">
+                            
+                            <input type="text" id="newLocUrl" placeholder="マニュアルURL (任意)" style="flex:1;">
+                        </div>
+
+                        <button id="addLocBtn" class="btn-add">追加</button>
+                    </div>
+                    <ul id="adminLocList" class="admin-list"></ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3>🚫 除外設定 (この場所はやらない)</h3>
+                    <p style="font-size:12px; color:#666;">
+                        「特定の場所」を「担当できない人」を選んで追加してください。
+                    </p>
+                    <div class="input-group-column">
+                        <div class="row">
+                            <select id="ngLocSelect" style="flex:1;">
+                                <option value="">場所を選択...</option>
+                            </select>
+                            <select id="ngStaffSelect" style="flex:1;">
+                                <option value="">人を選択...</option>
+                            </select>
+                        </div>
+                        <button id="addNgBtn" class="btn-add">設定を追加</button>
+                    </div>
+                    <ul id="adminNgList" class="admin-list"></ul>
+                </div>
+
+                <div style="margin-top: 40px; text-align: right;">
+                    <button id="resetAllDataBtn" style="background:#e74c3c; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;">⚠ 全データを初期状態に戻す</button>
+                </div>
+            </div> </div> </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
