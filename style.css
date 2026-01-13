@@ -1,0 +1,202 @@
+/* --- 変数定義 --- */
+:root {
+    --primary-color: #4a90e2; /* メインカラー（青） */
+    --bg-color: #f5f7fa;      /* 背景色 */
+    --card-bg: #ffffff;       /* コンテンツ背景色 */
+    --text-color: #333;       /* 文字色 */
+    --border-radius: 8px;     /* 角丸 */
+    --danger-color: #dc3545;  /* 警告・リセット色（赤） */
+    --copied-color: #007bff;  /* ★追加: コピー完了時の青色（鮮やかな青） */
+}
+
+/* --- 基本レイアウト --- */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* --- タブデザイン --- */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #888;
+    transition: 0.3s;
+}
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* --- 管理画面のレイアウト --- */
+.form-group-admin {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.item-add-area {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+/* --- 注文入力画面 --- */
+.form-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.item-info {
+    flex: 1;
+    min-width: 200px;
+}
+.item-name {
+    font-weight: bold;
+    display: block;
+    font-size: 1.05rem;
+}
+.item-desc {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 2px;
+}
+.item-requester-display {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: #eef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 4px;
+}
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+input[type="number"] {
+    width: 70px;
+    padding: 8px;
+    font-size: 1.1rem;
+    text-align: right;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: #fff;
+}
+textarea { height: 80px; resize: vertical; }
+
+/* --- ボタン --- */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    /* 色が変わる時にアニメーションさせる */
+    transition: background-color 0.3s ease;
+}
+.btn:hover { opacity: 0.9; }
+
+.btn-secondary { background-color: #6c757d; } /* 通常時のグレー */
+
+/* ★追加: コピー完了時のクラス（JavaScriptで付与） */
+.btn-copied {
+    background-color: var(--copied-color) !important; /* 強制的に青にする */
+    font-weight: bold;
+}
+
+.btn-add { background-color: #28a745; margin-top: 5px; }
+.btn-danger { background-color: var(--danger-color); margin-top: 5px; }
+
+/* --- その他装飾 --- */
+.section-title {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+.warning-box {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+.order-list {
+    list-style: none;
+    padding: 0;
+}
+.order-list li {
+    background: #f9f9f9;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order-details {
+    display: flex;
+    flex-direction: column;
+}
+.share-area {
+    margin-top: 20px;
+    padding: 15px;
+    background: #eef;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+.empty-msg { text-align: center; color: #888; }
+.note-text { margin-top: 20px; font-size: 0.8rem; color: #666; }
