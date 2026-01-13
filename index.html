@@ -3,142 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>シャッフル掃除当番決定表</title>
+    <title>備品注文・管理システム Ver.8</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
-        
-        <h1>掃除当番決定表</h1>
+        <h1>備品注文システム</h1>
 
-        <div class="tab-menu">
-            <button id="tabMain" class="tab-btn active">🏠 シャッフル画面</button>
-            <button id="tabAdmin" class="tab-btn">⚙️ 管理・設定画面</button>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('admin')">管理画面</button>
+            <button class="tab-btn" onclick="switchTab('order')">注文入力</button>
+            <button class="tab-btn" onclick="switchTab('confirm')">注文確認</button>
         </div>
 
-        <div id="mainView">
+        <div id="panel-admin" class="panel active">
             
-            <div class="member-area">
-                <h3 id="memberCountTitle">対象メンバー</h3>
-                
-                <ul id="displayMemberList"></ul>
-                
-                <div id="actionArea">
-                    <button id="shuffleBtn">シャッフルして決定</button>
-
-                    <div id="shareArea" class="hidden">
-                        <p class="lock-msg">✅ 結果は固定されました</p>
-                        <button id="copyUrlBtn" class="btn-share">🔗 共有用URLをコピー</button>
-                        <button id="resetBtn" class="btn-reset">↺ 固定を解除してリセット</button>
-                    </div>
-                </div>
+            <div class="section-title">1. 注文依頼者リストの登録</div>
+            <p style="font-size: 0.9rem; color: #666;">
+                まずはここで、依頼をお願いする人の名前を全て登録してください。
+            </p>
+            <div class="form-group-admin">
+                <input type="text" id="new-staff-name" placeholder="依頼者名（例：友利）">
+                <button class="btn btn-add" onclick="addStaff()">リストに追加</button>
             </div>
 
-            <div class="result-area">
-                <table id="resultTable">
-                    <thead>
-                        <tr>
-                            <th>掃除箇所</th>
-                            <th>担当者</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2" style="text-align:center; color:#999;">
-                                ボタンを押すと結果が表示されます
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="section-title">2. 備品の追加・編集</div>
+            <p style="font-size: 0.9rem; color: #666;">
+                備品名を入力し、その備品の「担当依頼者」を選択して追加してください。
+            </p>
+            
+            <div class="item-add-area">
+                <input type="text" id="new-item-name" placeholder="備品名（例：トイレットペーパー）">
+                <input type="text" id="new-item-desc" placeholder="説明・補足（例：ダブルのみ）">
+                
+                <p style="font-size:0.8rem; margin: 5px 0 2px;">▼この備品の依頼者を選択:</p>
+                <select id="admin-staff-select">
+                    </select>
+
+                <button class="btn btn-add" onclick="addOrUpdateItem()">備品を追加 / 更新</button>
+            </div>
+
+            <div class="section-title" style="border-color: #dc3545; color: #dc3545;">データのリセット</div>
+            <button class="btn btn-danger" onclick="resetData()">全てのデータを削除して初期化</button>
+
+            <div class="note-text">
+                ※設定完了後は「注文確認」タブからURLをコピーして保存・共有してください。
             </div>
         </div>
 
-        <div id="adminView" class="hidden">
+        <div id="panel-order" class="panel">
             
-            <div id="adminLoginPanel">
-                <div class="login-box">
-                    <h3>🔐 管理者ログイン</h3>
-                    <p class="login-note">設定を変更するにはログインしてください</p>
-                    
-                    <div class="input-group-column">
-                        <label for="loginUser">ユーザー名 (ローマ字)</label>
-                        <input type="text" id="loginUser" placeholder="例: admin" pattern="[a-zA-Z0-9]+" required>
-                    </div>
+            <div id="setup-warning" class="warning-box" style="display:none;"></div>
 
-                    <div class="input-group-column">
-                        <label for="loginPass">パスワード (最大8文字)</label>
-                        <input type="password" id="loginPass" placeholder="英数字8文字以内" maxlength="8">
-                        
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="showPassCheck">
-                            <label for="showPassCheck" style="font-size:14px; font-weight:normal;">パスワードを表示する</label>
-                        </div>
-                    </div>
+            <div class="section-title">注文数の入力</div>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">
+                必要な備品の個数を入力してください。<br>
+                ※依頼者は管理画面の設定に基づいて自動表示されます。
+            </p>
+            
+            <div id="items-container"></div>
 
-                    <p id="loginErrorMsg" class="error-msg"></p>
+            <div class="section-title">全体への連絡事項・備考</div>
+            <textarea id="order-remark" placeholder="例：14時以降に配達お願いします。急ぎです、等" oninput="updateRemark()"></textarea>
+            
+            <button class="btn" onclick="switchTab('confirm')">確認画面へ</button>
+        </div>
 
-                    <button id="loginBtn" class="btn-login">ログインして設定へ</button>
-                </div>
+        <div id="panel-confirm" class="panel">
+            <h3>注文概要</h3>
+            
+            <div id="display-remark-area" style="display:none; margin-bottom: 15px; padding: 10px; background: #fff3cd; border-radius: 4px;">
+                <strong>備考:</strong> <br>
+                <span id="display-remark-text" style="white-space: pre-wrap;"></span>
             </div>
 
-            <div id="adminConfigPanel" class="hidden">
-                
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <p class="admin-note" style="margin:0;">※設定はブラウザに自動保存されます。</p>
-                    <button id="logoutBtn" style="font-size:12px; padding:5px 10px;">ログアウト</button>
-                </div>
-                <hr style="margin: 15px 0; border:0; border-top:1px solid #eee;">
+            <ul id="confirm-list" class="order-list">
+                </ul>
 
-                <div class="admin-section">
-                    <h3>👤 担当者の追加・削除</h3>
-                    <div class="input-group">
-                        <input type="text" id="newStaffName" placeholder="名前を入力 (例: 佐藤)">
-                        <button id="addStaffBtn" class="btn-add">追加</button>
-                    </div>
-                    <ul id="adminStaffList" class="admin-list"></ul>
-                </div>
+            <div class="share-area">
+                <p>この内容を保存・共有するためのURLを発行します。</p>
+                <button id="copy-btn" class="btn btn-secondary" onclick="copyToClipboard()">現在の状態をURLとしてコピー</button>
+            </div>
+        </div>
 
-                <div class="admin-section">
-                    <h3>🧹 掃除箇所の追加・削除</h3>
-                    <div class="input-group-column">
-                        <input type="text" id="newLocName" placeholder="場所名 (例: トイレ)">
-                        
-                        <div class="row">
-                            <span style="font-size:14px; align-self:center;">必要人数:</span>
-                            <input type="number" id="newLocCap" placeholder="人数" value="1" min="1" style="width:60px;">
-                            
-                            <input type="text" id="newLocUrl" placeholder="マニュアルURL (任意)" style="flex:1;">
-                        </div>
-
-                        <button id="addLocBtn" class="btn-add">追加</button>
-                    </div>
-                    <ul id="adminLocList" class="admin-list"></ul>
-                </div>
-
-                <div class="admin-section">
-                    <h3>🚫 除外設定 (この場所はやらない)</h3>
-                    <p style="font-size:12px; color:#666;">
-                        「特定の場所」を「担当できない人」を選んで追加してください。
-                    </p>
-                    <div class="input-group-column">
-                        <div class="row">
-                            <select id="ngLocSelect" style="flex:1;">
-                                <option value="">場所を選択...</option>
-                            </select>
-                            <select id="ngStaffSelect" style="flex:1;">
-                                <option value="">人を選択...</option>
-                            </select>
-                        </div>
-                        <button id="addNgBtn" class="btn-add">設定を追加</button>
-                    </div>
-                    <ul id="adminNgList" class="admin-list"></ul>
-                </div>
-
-                <div style="margin-top: 40px; text-align: right;">
-                    <button id="resetAllDataBtn" style="background:#e74c3c; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;">⚠ 全データを初期状態に戻す</button>
-                </div>
-            </div> </div> </div>
+    </div>
 
     <script src="script.js"></script>
 
