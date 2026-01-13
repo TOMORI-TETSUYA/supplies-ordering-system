@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>備品注文・管理システム Ver.8</title>
+    <title>備品注文・管理システム Ver.10</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -85,7 +85,33 @@
                 <p>この内容を保存・共有するためのURLを発行します。</p>
                 <button id="copy-btn" class="btn btn-secondary" onclick="copyToClipboard()">現在の状態をURLとしてコピー</button>
             </div>
-        </div>
+
+            <div class="slack-area">
+                <div class="section-title" style="border-left-color: #4A154B;">Slack通知設定</div>
+                <p style="font-size:0.9rem; color:#555;">
+                    通知を送りたい相手（メンション）を入力してください。<br>
+                    <small>※最大7名まで設定可能。変更した内容はURLに保存されます。</small>
+                </p>
+
+                <div class="slack-inputs-grid">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                    <input type="text" class="slack-member-input" onchange="updateSlackMembers()">
+                </div>
+
+                <button id="slack-btn" class="btn btn-slack" onclick="copyAndOpenSlack()">
+                    Slack用メッセージをコピーして起動
+                </button>
+                <p style="font-size:0.8rem; color:#888; margin-top:5px;">
+                    ※ボタンを押すとメッセージがコピーされ、Slackが開きます。<br>
+                    送りたいチャンネルやDMに「貼り付け」て送信してください。
+                </p>
+            </div>
+            </div>
 
     </div>
 
